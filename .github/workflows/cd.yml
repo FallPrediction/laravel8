@@ -15,6 +15,9 @@ jobs:
   run_job_with_aws:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@main # Or a specific version
         with:
@@ -24,9 +27,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Check out code
-        uses: actions/checkout@v2
 
       - name: Build and push Docker image
         env:
