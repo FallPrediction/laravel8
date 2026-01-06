@@ -3,11 +3,10 @@ name: Deploy
 on:
   workflow_dispatch:
     inputs:
-      target_environment:
-        description: 'Target environment'
+      tag:
+        description: 'Tag for the Docker image'
         required: true
-        type: environment
-        default: 'pilot'
+        type: string
 
 permissions:
   id-token: write
@@ -34,7 +33,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ inputs.tag }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
